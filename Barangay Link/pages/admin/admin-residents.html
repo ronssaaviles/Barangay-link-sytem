@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residents | Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: #8B0000;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background-color: #d9d2c9;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: black;
+        }
+
+        .admin-title {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .menu {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu-item:hover {
+            background-color: #660000;
+        }
+
+        .menu-item.active {
+            background-color: #660000;
+        }
+
+        .icon {
+            width: 35px;
+            height: 35px;
+            background-color: #d9d2c9;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #800000;
+        }
+
+        .icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background-color: white;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .residents-title {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: white;
+            background-color: #8B0000;
+        }
+
+        .btn:hover {
+            background-color: #660000;
+        }
+
+        .residents-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .residents-table th,
+        .residents-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .residents-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .residents-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        .status-active {
+            background-color: #e6ffe6;
+            color: #006600;
+        }
+
+        .status-inactive {
+            background-color: #ffe6e6;
+            color: #660000;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-edit {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+        }
+
+        .btn-delete {
+            background-color: white;
+            color: #8B0000;
+            border: 1px solid #8B0000;
+        }
+
+        .logout {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo-section">
+                <div class="logo">LOGO</div>
+                <div class="admin-title">SYSTEM ADMINISTRATOR</div>
+            </div>
+            <div class="menu">
+                <a href="admin-dashboard.html" class="menu-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </span>
+                    Dashboard
+                </a>
+                <a href="admin-profile.html" class="menu-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </span>
+                    Profile
+                </a>
+                <a href="#" class="menu-item active">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </span>
+                    Residents
+                </a>
+                <a href="admin-doc-request.html" class="menu-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </span>
+                    Document Request
+                </a>
+                <a href="admin-feedback.html" class="menu-item">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </span>
+                    Feedback
+                </a>
+                <a href="../../index.html" class="menu-item logout">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </span>
+                    Logout
+                </a>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1 class="residents-title">RESIDENTS</h1>
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Search residents...">
+                    <button class="btn" onclick="addNewResident()">ADD NEW</button>
+                </div>
+            </div>
+            <table class="residents-table">
+                <thead>
+                    <tr>
+                        <th>RESIDENT ID</th>
+                        <th>NAME</th>
+                        <th>ADDRESS</th>
+                        <th>CONTACT</th>
+                        <th>STATUS</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RES001</td>
+                        <td>John Smith</td>
+                        <td>Block 1, Lot 4, Street Name</td>
+                        <td>+1234567890</td>
+                        <td><span class="status status-active">Active</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-edit" onclick="editResident('RES001')">Edit</button>
+                                <button class="btn-delete" onclick="deleteResident('RES001')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RES002</td>
+                        <td>Maria Garcia</td>
+                        <td>Block 2, Lot 7, Street Name</td>
+                        <td>+1234567891</td>
+                        <td><span class="status status-active">Active</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-edit" onclick="editResident('RES002')">Edit</button>
+                                <button class="btn-delete" onclick="deleteResident('RES002')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RES003</td>
+                        <td>Robert Johnson</td>
+                        <td>Block 3, Lot 2, Street Name</td>
+                        <td>+1234567892</td>
+                        <td><span class="status status-inactive">Inactive</span></td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-edit" onclick="editResident('RES003')">Edit</button>
+                                <button class="btn-delete" onclick="deleteResident('RES003')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function addNewResident() {
+            // Add new resident functionality
+            alert('Add new resident functionality will be implemented here');
+        }
+
+        function editResident(residentId) {
+            // Edit resident functionality
+            alert('Edit resident ' + residentId + ' functionality will be implemented here');
+        }
+
+        function deleteResident(residentId) {
+            // Delete resident functionality
+            if (confirm('Are you sure you want to delete resident ' + residentId + '?')) {
+                alert('Delete resident functionality will be implemented here');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barangay Link | Document Request</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .sidebar {
+            width: 20%;
+            min-width: 300px;
+            background-color: #800000;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .user-section {
+            margin-top: 50px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 150px;
+            height: 150px;
+            background-color: #d9d2c9;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: black;
+        }
+
+        .user-name {
+            margin-top: 30px;
+            font-size: 25px;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            font-size: 30px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu li:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+        .menu li:hover {
+            background-color: #660000;
+        }
+
+        .menu-item.active {
+            background-color: #660000;
+        }
+
+        .icon {
+            width: 50px;
+            height: 50px;
+            background-color: #d9d2c9;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #800000;
+        }
+
+        .icon svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .document-content {
+            flex-grow: 1;
+            padding: 60px;
+            margin-left: 20%;
+            min-height: 100vh;
+            background-color: white;
+            position: relative;
+        }
+
+        .document-form {
+            max-width: 600px;
+            margin-left: 150px;
+            margin-top: 40px;
+            position: relative;
+            padding-bottom: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid black;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            position: absolute;
+            bottom: -30px;
+            right: -600px;
+            width: 100%;
+            background-color: white;
+            padding: 20px 0;
+        }
+
+        .btn {
+            padding: 20px 60px;
+            border: none;
+            border-radius: 60px;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .btn-cancel {
+            background-color: #800000;
+        }
+
+        .btn-submit {
+            background-color: #800000;
+        }
+
+        .btn:hover {
+            background-color: #660000;
+        }
+
+        .document-description {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #800000;
+            display: none;
+            max-width: 600px;
+        }
+
+        .document-description h3 {
+            margin-top: 0;
+            color: #800000;
+            font-size: 1.2em;
+        }
+
+        .document-description p {
+            margin: 10px 0;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .document-description ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .document-description li {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        #formFields {
+            display: none;
+        }
+
+        .history-section {
+            margin-top: 50px;
+            margin-left: 150px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+        }
+
+        .history-section h2 {
+            color: #800000;
+            margin-bottom: 20px;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .history-table th {
+            background-color: #800000;
+            color: white;
+        }
+
+        .history-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status-pending {
+            color: #ff9900;
+            font-weight: bold;
+        }
+
+        .status-approved {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .status-rejected {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .btn-view {
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #800000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="user-section">
+                <div class="logo">LOGO</div>
+                <p class="user-name">USER</p>
+            </div>
+            <ul class="menu">
+                <a href="user-dashboard.html">
+                    <li>
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </span>
+                        Dashboard
+                    </li>
+                </a>
+                <a href="user-profile.html">
+                    <li>
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </span>
+                        Profile
+                    </li>
+                </a>
+                <a href="#">
+                    <li class="menu-item active">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </span>
+                        Document Request
+                    </li>
+                </a>
+                <a href="user-feedback.html">
+                    <li>
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </span>
+                        Feedback
+                    </li>
+                </a>
+                <br><br><br><br><br><br><br><br>
+                <a href="../../index.html">
+                    <li>
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                        </span>
+                        Logout
+                    </li>
+                </a>
+            </ul>
+        </div>
+
+        <!-- Document Request Content -->
+        <div class="document-content">
+            <h1>DOCUMENT REQUEST</h1>
+            <div class="document-form">
+                <div class="form-group">
+                    <select name="document-type" id="documentType" onchange="showForm()">
+                        <option value="">SELECT</option>
+                        <option value="residency">Certificate of Residency</option>
+                        <option value="clearance">Barangay Clearance</option>
+                        <option value="indigency">Certificate of Indigency</option>
+                    </select>
+                </div>
+
+                <!-- Document Descriptions -->
+                <div id="residencyDescription" class="document-description">
+                    <h3>Certificate of Residency</h3>
+                    <p>This document certifies that you are a legitimate resident of the barangay. It is commonly
+                        required for:</p>
+                    <ul>
+                        <li>School enrollment and requirements</li>
+                        <li>Employment requirements</li>
+                        <li>Proof of address for various transactions</li>
+                    </ul>
+                    <p><strong>Processing Time:</strong> 1-2 business days</p>
+                </div>
+
+                <div id="clearanceDescription" class="document-description">
+                    <h3>Barangay Clearance</h3>
+                    <p>A document certifying that you have no derogatory record in the barangay. This is required for:
+                    </p>
+                    <ul>
+                        <li>Job applications</li>
+                        <li>Business permit applications</li>
+                        <li>Police clearance requirements</li>
+                    </ul>
+                    <p><strong>Processing Time:</strong> 1-2 business days</p>
+                </div>
+
+                <div id="indigencyDescription" class="document-description">
+                    <h3>Certificate of Indigency</h3>
+                    <p>This document certifies that you are from a low-income family and may need financial assistance.
+                        Used for:</p>
+                    <ul>
+                        <li>Medical assistance</li>
+                        <li>Educational assistance</li>
+                        <li>Other social services</li>
+                    </ul>
+                    <p><strong>Processing Time:</strong> 1-2 business days</p>
+                </div>
+
+                <!-- Form fields that will be shown after selection -->
+                <div id="formFields">
+                    <div class="form-group">
+                        <label>FIRST NAME</label>
+                        <input type="text" name="firstname">
+                    </div>
+                    <div class="form-group">
+                        <label>MIDDLE NAME</label>
+                        <input type="text" name="middlename">
+                    </div>
+                    <div class="form-group">
+                        <label>LAST NAME</label>
+                        <input type="text" name="lastname">
+                    </div>
+                    <div class="form-group">
+                        <label>AGE</label>
+                        <input type="number" name="age">
+                    </div>
+                    <div class="form-group">
+                        <label>NATIONALITY</label>
+                        <input type="text" name="nationality">
+                    </div>
+                    <div class="form-group">
+                        <label>ADDRESS</label>
+                        <input type="text" name="address">
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-cancel" onclick="cancelForm()">CANCEL</button>
+                        <button class="btn btn-submit">SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+            <div class="history-section">
+                <h2>REQUEST HISTORY</h2>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Document Type</th>
+                            <th>Date Requested</th>
+                            <th>Status</th>
+                            <th>Last Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>REQ-2024-001</td>
+                            <td>Certificate of Residency</td>
+                            <td>2024-11-20</td>
+                            <td><span class="status-approved">Approved</span></td>
+                            <td>2024-11-21</td>
+                        </tr>
+                        <tr>
+                            <td>REQ-2024-002</td>
+                            <td>Barangay Clearance</td>
+                            <td>2024-11-22</td>
+                            <td><span class="status-pending">Pending</span></td>
+                            <td>2024-11-22</td>
+                        </tr>
+                        <tr>
+                            <td>REQ-2024-003</td>
+                            <td>Certificate of Indigency</td>
+                            <td>2024-11-23</td>
+                            <td><span class="status-rejected">Rejected</span></td>
+                            <td>2024-11-23</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showForm() {
+            const documentType = document.getElementById('documentType');
+            const formFields = document.getElementById('formFields');
+            const historySection = document.querySelector('.history-section');
+
+            // Hide all descriptions first
+            const descriptions = document.querySelectorAll('.document-description');
+            descriptions.forEach(desc => desc.style.display = 'none');
+
+            if (documentType.value !== '') {
+                // Show the relevant description
+                const selectedDescription = document.getElementById(documentType.value + 'Description');
+                if (selectedDescription) {
+                    selectedDescription.style.display = 'block';
+                }
+                formFields.style.display = 'block';
+                // Hide the history section when form is shown
+                historySection.style.display = 'none';
+                // Ensure the document-content scrolls to top when showing form
+                document.querySelector('.document-content').scrollTop = 0;
+            } else {
+                formFields.style.display = 'none';
+                // Show the history section when no document type is selected
+                historySection.style.display = 'block';
+            }
+        }
+
+        function cancelForm() {
+            // Reset the select element
+            document.getElementById('documentType').value = '';
+            // Hide the form fields
+            document.getElementById('formFields').style.display = 'none';
+            // Hide all descriptions
+            const descriptions = document.querySelectorAll('.document-description');
+            descriptions.forEach(desc => desc.style.display = 'none');
+            // Show the history section again
+            document.querySelector('.history-section').style.display = 'block';
+            // Clear all input fields
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+        }
+
+        function viewRequest(requestId) {
+            // Function to handle viewing request details
+            alert('Viewing request: ' + requestId);
+        }
+    </script>
+</body>
+
+</html>
